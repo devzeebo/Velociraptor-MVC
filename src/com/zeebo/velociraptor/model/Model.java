@@ -5,12 +5,28 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Observable;
 
-import com.zeebo.velociraptor.binding.view.ViewBinding;
+import com.zeebo.velociraptor.annotation.Bindable;
+import com.zeebo.velociraptor.view.View;
 
+/**
+ * Base implementation of {@code Model}. In order for auto binding with a compatible {@link View} to work, a class must extend
+ * this class. Additionally, any instance variable that will be bound to a component in a {@code View} must be marked
+ * {@link Bindable}.
+ * 
+ * @author Eric Siebeneich
+ */
 public class Model extends Observable
 {
+	/**
+	 * Internal mapping of all the {@link Field}s this {@code Model} contains.
+	 */
 	private HashMap<String, Field>	fields;
 
+	/**
+	 * Default Constructor.
+	 * 
+	 * Creates a new {@code Model}.
+	 */
 	public Model()
 	{
 		fields = new HashMap<String, Field>();
@@ -79,11 +95,11 @@ public class Model extends Observable
 	}
 
 	/**
-	 * Called by the {@link ViewBinding} to retrieve data from the model.
+	 * Returns the value of the specified field.
 	 * 
 	 * @param param
-	 *            the parameter name
-	 * @return the value of the parameter
+	 *            the field name
+	 * @return the value of the field
 	 */
 	public final Object getValue(String param)
 	{

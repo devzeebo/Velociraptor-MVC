@@ -12,7 +12,7 @@ import com.zeebo.velociraptor.view.View;
 
 /**
  * This class is a utility class to create all the bindings between a {@link Model} and {@link View}. It cannot be instantiated,
- * and should be used in a static context.
+ * and should be used only in a static context.
  * 
  * @author Eric Siebeneich
  */
