@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="package" author="true" classpath="../Common/bin;C:\Program Files\Eclipse\plugins\org.junit_4.8.1.v4_8_1_v20100427-1100\junit.jar;C:\Program Files\Eclipse\plugins\org.hamcrest.core_1.1.0.v20090501071000.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.zeebo.velociraptor.view.binding,com.zeebo.velociraptor.view,com.zeebo.velociraptor.controller,com.zeebo.velociraptor.annotation,com.zeebo.velociraptor.model" source="1.6" sourcepath="src;test/src" splitindex="true" use="true" version="true">
+        <javadoc access="package" author="true" classpath="../Common/bin;C:\Program Files\Eclipse\plugins\org.junit_4.8.1.v4_8_1_v20100427-1100\junit.jar;C:\Program Files\Eclipse\plugins\org.hamcrest.core_1.1.0.v20090501071000.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="*" source="1.6" sourcepath="src;test/src" splitindex="true" use="true" version="true">
             <link href="http://www.junit.org/junit/javadoc/4.5"/>
             <link href="http://java.sun.com/javase/6/docs/api/"/>
         </javadoc>

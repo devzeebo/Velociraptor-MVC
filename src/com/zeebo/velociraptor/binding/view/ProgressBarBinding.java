@@ -1,14 +1,14 @@
-package com.zeebo.velociraptor.view.binding;
+package com.zeebo.velociraptor.binding.view;
 
-import javax.swing.JSlider;
+import javax.swing.JProgressBar;
 
 import com.zeebo.velociraptor.model.Model;
 
-class SliderBinding extends ViewBinding<Integer>
+class ProgressBarBinding extends ViewBinding<Integer>
 {
-	private final JSlider	componentReference;
+	private final JProgressBar	componentReference;
 
-	SliderBinding(Model model, String paramName, JSlider component)
+	ProgressBarBinding(Model model, String paramName, JProgressBar component)
 	{
 		super(model, paramName, component);
 

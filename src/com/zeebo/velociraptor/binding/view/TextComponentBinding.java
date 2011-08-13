@@ -1,4 +1,4 @@
-package com.zeebo.velociraptor.view.binding;
+package com.zeebo.velociraptor.binding.view;
 
 import javax.swing.text.JTextComponent;
 

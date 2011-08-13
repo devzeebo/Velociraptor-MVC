@@ -2,6 +2,7 @@ package com.zeebo.velociraptor.view;
 
 import javax.swing.JFrame;
 
+import com.zeebo.velociraptor.binding.BindingProcessor;
 import com.zeebo.velociraptor.model.Model;
 
 @SuppressWarnings("serial")
@@ -28,6 +29,6 @@ public abstract class View<T extends Model> extends JFrame
 			this.model.deleteObservers();
 		}
 		this.model = model;
-		BindingProcessor.processBindings(model, this);
+		BindingProcessor.attachBindings(model, this);
 	}
 }

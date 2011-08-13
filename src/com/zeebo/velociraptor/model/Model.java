@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Observable;
 
-import com.zeebo.velociraptor.view.binding.ViewBinding;
+import com.zeebo.velociraptor.binding.view.ViewBinding;
 
 public class Model extends Observable
 {
