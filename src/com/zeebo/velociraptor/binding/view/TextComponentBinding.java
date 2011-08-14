@@ -1,7 +1,9 @@
 package com.zeebo.velociraptor.binding.view;
 
+import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -15,11 +17,11 @@ final class TextComponentBinding extends ViewBinding<String>
 	private final JTextComponent	componentReference;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	TextComponentBinding(Model model, String paramName, JTextComponent component)
+	TextComponentBinding(Model model, String paramName, BindablePolicy policy, JTextComponent component)
 	{
-		super(model, paramName, component);
+		super(model, paramName, policy, component);
 
 		this.componentReference = component;
 	}

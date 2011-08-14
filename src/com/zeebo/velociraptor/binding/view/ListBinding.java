@@ -3,8 +3,10 @@ package com.zeebo.velociraptor.binding.view;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.JComponent;
 import javax.swing.JList;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -18,11 +20,11 @@ final class ListBinding extends ViewBinding<List<?>>
 	private final ListViewBindingModel	listModel;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	public ListBinding(Model model, String paramName, JList list)
+	public ListBinding(Model model, String paramName, BindablePolicy policy, JList list)
 	{
-		super(model, paramName, list);
+		super(model, paramName, policy, list);
 
 		listModel = new ListViewBindingModel((List<?>)model.getValue(paramName));
 

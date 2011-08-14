@@ -3,8 +3,10 @@ package com.zeebo.velociraptor.binding.view;
 import java.util.List;
 
 import javax.swing.AbstractSpinnerModel;
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -18,11 +20,11 @@ class SpinnerBinding extends ViewBinding<List<?>>
 	private final SpinnerBindingModel	spinnerModel;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	SpinnerBinding(Model model, String paramName, JSpinner list)
+	SpinnerBinding(Model model, String paramName, BindablePolicy policy, JSpinner list)
 	{
-		super(model, paramName, list);
+		super(model, paramName, policy, list);
 
 		spinnerModel = new SpinnerBindingModel((List<?>)model.getValue(paramName));
 

@@ -1,7 +1,9 @@
 package com.zeebo.velociraptor.binding.view;
 
+import javax.swing.JComponent;
 import javax.swing.JProgressBar;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -15,11 +17,11 @@ class ProgressBarBinding extends ViewBinding<Integer>
 	private final JProgressBar	componentReference;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	ProgressBarBinding(Model model, String paramName, JProgressBar component)
+	ProgressBarBinding(Model model, String paramName, BindablePolicy policy, JProgressBar component)
 	{
-		super(model, paramName, component);
+		super(model, paramName, policy, component);
 
 		componentReference = component;
 	}

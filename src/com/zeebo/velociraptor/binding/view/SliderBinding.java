@@ -1,7 +1,9 @@
 package com.zeebo.velociraptor.binding.view;
 
+import javax.swing.JComponent;
 import javax.swing.JSlider;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -15,11 +17,11 @@ class SliderBinding extends ViewBinding<Integer>
 	private final JSlider	componentReference;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	SliderBinding(Model model, String paramName, JSlider component)
+	SliderBinding(Model model, String paramName, BindablePolicy policy, JSlider component)
 	{
-		super(model, paramName, component);
+		super(model, paramName, policy, component);
 
 		componentReference = component;
 	}

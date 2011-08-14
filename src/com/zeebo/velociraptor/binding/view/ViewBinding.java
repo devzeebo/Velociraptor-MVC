@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import javax.swing.JComponent;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
 
 /**
@@ -18,13 +19,16 @@ import com.zeebo.velociraptor.model.Model;
 public abstract class ViewBinding<T> implements Observer
 {
 	/** The {@link Model} the binding is bound to */
-	private Model				model;
+	private Model					model;
 
 	/** The name of the field the binding is bound to */
-	protected final String		fieldName;
+	protected final String			fieldName;
+
+	/** The {@link BindablePolicy} to enforce on this binding */
+	protected final BindablePolicy	policy;
 
 	/** The {@link JComponent} the binding is bound to */
-	protected final JComponent	component;
+	protected final JComponent		component;
 
 	/**
 	 * Default constructor.
@@ -33,13 +37,16 @@ public abstract class ViewBinding<T> implements Observer
 	 *            The {@link Model} to bind this {@code ViewBinding} to
 	 * @param fieldName
 	 *            {@link #fieldName}
+	 * @param policy
+	 *            the {@link BindablePolicy} to enforce on this binding
 	 * @param component
 	 *            {@link #component}
 	 */
-	ViewBinding(Model model, String fieldName, JComponent component)
+	ViewBinding(Model model, String fieldName, BindablePolicy policy, JComponent component)
 	{
 		setModel(model);
 		this.fieldName = fieldName;
+		this.policy = policy;
 		this.component = component;
 	}
 

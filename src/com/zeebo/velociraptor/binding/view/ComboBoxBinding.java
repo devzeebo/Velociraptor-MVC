@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
+import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.binding.view.ListBinding.ListViewBindingModel;
 import com.zeebo.velociraptor.model.Model;
 
@@ -19,11 +21,11 @@ class ComboBoxBinding extends ViewBinding<List<?>>
 	private final ComboBoxBindingModel	comboModel;
 
 	/**
-	 * @see ViewBinding#ViewBinding(Model, String, javax.swing.JComponent)
+	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	ComboBoxBinding(Model model, String paramName, JComboBox list)
+	ComboBoxBinding(Model model, String paramName, BindablePolicy policy, JComboBox list)
 	{
-		super(model, paramName, list);
+		super(model, paramName, policy, list);
 
 		comboModel = new ComboBoxBindingModel((List<?>)model.getValue(paramName));
 
