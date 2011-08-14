@@ -1,6 +1,8 @@
 package com.zeebo.velociraptor.binding.view;
 
 import javax.swing.JComponent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import com.zeebo.velociraptor.annotation.BindablePolicy;
@@ -19,11 +21,32 @@ final class TextComponentBinding extends ViewBinding<String>
 	/**
 	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	TextComponentBinding(Model model, String paramName, BindablePolicy policy, JTextComponent component)
+	TextComponentBinding(final Model model, final String paramName, final BindablePolicy policy, final JTextComponent component)
 	{
 		super(model, paramName, policy, component);
 
 		this.componentReference = component;
+
+		this.componentReference.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				model.setValue(paramName, componentReference.getText());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				model.setValue(paramName, componentReference.getText());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				model.setValue(paramName, componentReference.getText());
+			}
+		});
 	}
 
 	/**

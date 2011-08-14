@@ -4,11 +4,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import com.zeebo.velociraptor.model.Model;
-import com.zeebo.velociraptor.view.View;
+import com.zeebo.velociraptor.view.ViewPanel;
 
 /**
  * This annotation must be present on any {@link Model} instance variable that needs to be bound to a component in the
- * {@link View}. <br />
+ * {@link ViewPanel}. <br />
  * <br />
  * A {@code Bindable} field can be marked either {@link BindablePolicy#READ_ONLY}, {@link BindablePolicy#READ_WRITE}, or
  * {@link BindablePolicy#WRITE_ONLY}. The value if unspecified is {@link BindablePolicy#READ_WRITE}.

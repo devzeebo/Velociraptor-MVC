@@ -7,11 +7,11 @@ import java.util.Observable;
 
 import com.zeebo.common.reflection.ReflectionUtilities;
 import com.zeebo.velociraptor.annotation.Bindable;
-import com.zeebo.velociraptor.view.View;
+import com.zeebo.velociraptor.view.ViewPanel;
 
 /**
- * Base implementation of {@code Model}. In order for auto binding with a compatible {@link View} to work, a class must extend
- * this class. Additionally, any instance variable that will be bound to a component in a {@code View} must be marked
+ * Base implementation of {@code Model}. In order for auto binding with a compatible {@link ViewPanel} to work, a class must extend
+ * this class. Additionally, any instance variable that will be bound to a component in a {@code ViewPanel} must be marked
  * {@link Bindable}.
  * 
  * @author Eric Siebeneich
@@ -19,7 +19,7 @@ import com.zeebo.velociraptor.view.View;
 public class Model extends Observable
 {
 	/**
-	 * Internal mapping of all the {@link Field}s this {@code Model} contains.
+	 * Internal mapping of all the {@link Field}s this {@code Model} and its parents contain.
 	 */
 	private HashMap<String, Field>	fields;
 
@@ -41,11 +41,11 @@ public class Model extends Observable
 	}
 
 	/**
-	 * Notifies any observers that the parameter {@code arg} has changed. This method forces {@link Observable#setChanged()} so
-	 * that the notifications are always sent.
+	 * Notifies any observers that the field {@code arg} has changed. This method forces {@link Observable#setChanged()} so that
+	 * the notifications are always sent.
 	 * 
 	 * @param arg
-	 *            the parameter that has changed
+	 *            the field that has changed
 	 */
 	public final void notifyObservers(String arg)
 	{
@@ -54,40 +54,40 @@ public class Model extends Observable
 	}
 
 	/**
-	 * This method should be used to set the value of {@code param} in the model. It will automatically notify any observers
-	 * watching {@code param}. This is equivalent to setting {@code model.}<i>{@code param}</i>, then calling
-	 * {@linkplain #notifyObservers(String) model.notifyObservers("param")}.
+	 * This method should be used to set the value of {@code field} in the model. It will automatically notify any observers
+	 * watching {@code field}. This is equivalent to setting {@code model.}<i>{@code field}</i>, then calling
+	 * {@linkplain #notifyObservers(String) model.notifyObservers("field")}.
 	 * 
-	 * @param param
-	 *            the parameter name
+	 * @param field
+	 *            the field name
 	 * @param value
-	 *            the value to set the parameter to
+	 *            the value to set the field to
 	 * @throws IllegalArgumentException
 	 *             if value is of an incorrect type
 	 */
-	public final void setValue(String param, Object value)
+	public final void setValue(String field, Object value)
 		throws IllegalArgumentException
 	{
-		setValue2(param, value);
-		notifyObservers(param);
+		setValue2(field, value);
+		notifyObservers(field);
 	}
 
 	/**
 	 * Should only be used by the callback Observer.
 	 * 
-	 * @param param
-	 *            the parameter name
+	 * @param field
+	 *            the field name
 	 * @param value
-	 *            the value to set the parameter to
+	 *            the value to set the field to
 	 * @throws IllegalArgumentException
 	 *             if value is of an incorrect type
 	 */
-	public final void setValue2(String param, Object value)
+	public final void setValue2(String field, Object value)
 		throws IllegalArgumentException
 	{
 		try
 		{
-			fields.get(param).set(this, value);
+			fields.get(field).set(this, value);
 		}
 		catch(IllegalAccessException e)
 		{
@@ -129,11 +129,17 @@ public class Model extends Observable
 	 * @throws Exception
 	 *             if an error occurs while retrieving or invoking the method
 	 */
-	public final Object callMethod(String methodName)
+	public final Object callMethod(String methodName, Object... args)
 		throws Exception // TODO: Fix Exception
 	{
-		Method m = getClass().getMethod(methodName);
+		Class<?>[] argTypes = new Class<?>[args.length];
+		for(int x = 0; x < args.length; x++)
+		{
+			argTypes[x] = args[x].getClass();
+		}
 
-		return m.invoke(this, (Object[])null);
+		Method m = getClass().getMethod(methodName, argTypes);
+
+		return m.invoke(this, args);
 	}
 }

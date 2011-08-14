@@ -10,10 +10,10 @@ import com.zeebo.velociraptor.annotation.Bind;
 import com.zeebo.velociraptor.annotation.Bindable;
 import com.zeebo.velociraptor.binding.view.ViewBindingFactory;
 import com.zeebo.velociraptor.model.Model;
-import com.zeebo.velociraptor.view.View;
+import com.zeebo.velociraptor.view.ViewPanel;
 
 /**
- * This class is a utility class to create all the bindings between a {@link Model} and {@link View}. It cannot be instantiated,
+ * This class is a utility class to create all the bindings between a {@link Model} and {@link ViewPanel}. It cannot be instantiated,
  * and should be used only in a static context.
  * 
  * @author Eric Siebeneich
@@ -32,7 +32,7 @@ public final class BindingProcessor
 	 * @param view
 	 *            the view instance to link
 	 */
-	public static void attachBindings(Model model, View<?> view)
+	public static void attachBindings(Model model, ViewPanel<?> view)
 	{
 		Field[] modelFieldArray = ReflectionUtilities.getAllFields(model.getClass(), Model.class);
 		HashMap<String, Field> modelFields = new HashMap<String, Field>();
@@ -43,23 +43,36 @@ public final class BindingProcessor
 			modelFields.put(f.getName(), f);
 		}
 
-		Field[] viewFields = ReflectionUtilities.getAllFields(view.getClass(), View.class);
+		Field[] viewFields = ReflectionUtilities.getAllFields(view.getClass(), ViewPanel.class);
 
 		for(Field f : viewFields)
 		{
 			Bind viewBinding = f.getAnnotation(Bind.class);
-			Bindable modelBinding = modelFields.get(viewBinding.value()).getAnnotation(Bindable.class);
 
-			if(modelBinding != null && ReflectionUtilities.testSubclassOf(f.getType(), JComponent.class) && viewBinding != null)
+			if(ReflectionUtilities.testSubclassOf(f.getType(), JComponent.class) && viewBinding != null)
 			{
-				f.setAccessible(true);
-
-				try
+				if(modelFields.get(viewBinding.value()) == null)
 				{
-					ViewBindingFactory.newViewBinding(model, viewBinding.value(), modelBinding.value(), (JComponent)f.get(view));
+					throw new RuntimeException("Field '" + viewBinding.value() + "' cannot be found for Model type "
+						+ model.getClass());
 				}
-				catch(IllegalAccessException iae)
+				Bindable modelBinding = modelFields.get(viewBinding.value()).getAnnotation(Bindable.class);
+				if(modelBinding != null)
 				{
+					f.setAccessible(true);
+
+					try
+					{
+						ViewBindingFactory.newViewBinding(model, viewBinding.value(), viewBinding.write(), modelBinding.value(),
+							(JComponent)f.get(view));
+					}
+					catch(IllegalAccessException iae)
+					{
+					}
+				} else
+				{
+					throw new RuntimeException("Attempting to bind to an unbindable field: '" + f.getName()
+						+ "' cannot be bound to '" + viewBinding.value() + "'");
 				}
 			}
 		}

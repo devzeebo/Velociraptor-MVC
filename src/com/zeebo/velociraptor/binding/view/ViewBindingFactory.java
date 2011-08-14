@@ -50,7 +50,7 @@ public final class ViewBindingFactory
 	 * 
 	 * @param model
 	 *            the {@link Model} to bind to
-	 * @param argName
+	 * @param readName
 	 *            the field to bind to in {@code model}
 	 * @param policy
 	 *            the {@link BindablePolicy} to enforce
@@ -58,35 +58,36 @@ public final class ViewBindingFactory
 	 *            the {@link JComponent} to bind
 	 * @return a new {@link ViewBinding} that binds {@code model.argName} and {@code component}
 	 */
-	public static final ViewBinding<?> newViewBinding(Model model, String argName, BindablePolicy policy, JComponent component)
+	public static final ViewBinding<?> newViewBinding(Model model, String readName, String writeName, BindablePolicy policy,
+		JComponent component)
 	{
 		if(component instanceof JTextComponent)
 		{
-			return new TextComponentBinding(model, argName, policy, (JTextComponent)component);
+			return new TextComponentBinding(model, readName, policy, (JTextComponent)component);
 		}
 		if(component instanceof JLabel)
 		{
-			return new LabelBinding(model, argName, policy, (JLabel)component);
+			return new LabelBinding(model, readName, policy, (JLabel)component);
 		}
 		if(component instanceof JList)
 		{
-			return new ListBinding(model, argName, policy, (JList)component);
+			return new ListBinding(model, readName, writeName, policy, (JList)component);
 		}
 		if(component instanceof JComboBox)
 		{
-			return new ComboBoxBinding(model, argName, policy, (JComboBox)component);
+			return new ComboBoxBinding(model, readName, policy, (JComboBox)component);
 		}
 		if(component instanceof JProgressBar)
 		{
-			return new ProgressBarBinding(model, argName, policy, (JProgressBar)component);
+			return new ProgressBarBinding(model, readName, policy, (JProgressBar)component);
 		}
 		if(component instanceof JSlider)
 		{
-			return new SliderBinding(model, argName, policy, (JSlider)component);
+			return new SliderBinding(model, readName, policy, (JSlider)component);
 		}
 		if(component instanceof JSpinner)
 		{
-			return new SpinnerBinding(model, argName, policy, (JSpinner)component);
+			return new SpinnerBinding(model, readName, policy, (JSpinner)component);
 		}
 		return null;
 	}

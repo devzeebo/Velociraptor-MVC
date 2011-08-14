@@ -1,10 +1,14 @@
 package com.zeebo.velociraptor.binding.view;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
@@ -14,7 +18,7 @@ import com.zeebo.velociraptor.model.Model;
  * 
  * @author Eric Siebeneich
  */
-final class ListBinding extends ViewBinding<List<?>>
+final class ListBinding extends ViewBinding<Object>
 {
 	/** The {@link ListViewBindingModel} rendered by the {@link JList} */
 	private final ListViewBindingModel	listModel;
@@ -22,13 +26,30 @@ final class ListBinding extends ViewBinding<List<?>>
 	/**
 	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	public ListBinding(Model model, String paramName, BindablePolicy policy, JList list)
+	public ListBinding(final Model model, final String readName, final String writeName, final BindablePolicy policy,
+		final JList list)
 	{
-		super(model, paramName, policy, list);
+		super(model, readName, policy, list);
 
-		listModel = new ListViewBindingModel((List<?>)model.getValue(paramName));
+		listModel = new ListViewBindingModel(model.getValue(readName));
 
 		list.setModel(listModel);
+
+		list.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				if(list.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION)
+				{
+					model.setValue(writeName, list.getSelectedValue());
+				} else
+				{
+					model.setValue(writeName,
+						Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, String[].class));
+				}
+			}
+		});
 	}
 
 	/**
@@ -38,7 +59,7 @@ final class ListBinding extends ViewBinding<List<?>>
 	 *            the new list to reference
 	 */
 	@Override
-	final void setData(List<?> data)
+	final void setData(Object data)
 	{
 		listModel.setData(data);
 	}
@@ -71,7 +92,7 @@ final class ListBinding extends ViewBinding<List<?>>
 		 * @param data
 		 *            {@link #data}
 		 */
-		ListViewBindingModel(List<?> data)
+		ListViewBindingModel(Object data)
 		{
 			setData(data);
 		}
@@ -92,9 +113,15 @@ final class ListBinding extends ViewBinding<List<?>>
 		 * @param data
 		 *            {@link #data}
 		 */
-		void setData(List<?> data)
+		void setData(Object data)
 		{
-			this.data = data;
+			if(data instanceof List<?>)
+			{
+				this.data = (List<?>)data;
+			} else
+			{
+				this.data = Arrays.asList((Object[])data);
+			}
 		}
 
 		/**

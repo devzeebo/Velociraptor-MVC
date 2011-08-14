@@ -2,6 +2,8 @@ package com.zeebo.velociraptor.binding.view;
 
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.zeebo.velociraptor.annotation.BindablePolicy;
 import com.zeebo.velociraptor.model.Model;
@@ -19,11 +21,20 @@ class ProgressBarBinding extends ViewBinding<Integer>
 	/**
 	 * @see ViewBinding#ViewBinding(Model, String, BindablePolicy, JComponent)
 	 */
-	ProgressBarBinding(Model model, String paramName, BindablePolicy policy, JProgressBar component)
+	ProgressBarBinding(final Model model, final String paramName, final BindablePolicy policy, final JProgressBar component)
 	{
 		super(model, paramName, policy, component);
 
 		componentReference = component;
+
+		componentReference.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				model.setValue(paramName, componentReference.getValue());
+			}
+		});
 	}
 
 	/**

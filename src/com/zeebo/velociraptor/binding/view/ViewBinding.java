@@ -76,13 +76,14 @@ public abstract class ViewBinding<T> implements Observer
 	 * 
 	 * @param o
 	 *            This will be the {@link Model} this binding is bound to
-	 * @param arg
+	 * @param fieldName
 	 *            The field that was changed in the {@code Model}
 	 */
 	@Override
-	public final void update(Observable o, Object arg)
+	public final void update(Observable o, Object fieldName)
 	{
-		if(((String)arg).equals(fieldName) && o instanceof Model && (getData() == null || !getData().equals(getParamValue())))
+		if(((String)fieldName).equals(this.fieldName) && o instanceof Model
+			&& (getData() == null || !getData().equals(getParamValue())))
 		{
 			setData(getParamValue());
 
