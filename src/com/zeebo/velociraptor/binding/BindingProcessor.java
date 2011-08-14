@@ -1,11 +1,13 @@
 package com.zeebo.velociraptor.binding;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import javax.swing.JComponent;
 
 import com.zeebo.common.reflection.ReflectionUtilities;
 import com.zeebo.velociraptor.annotation.Bind;
+import com.zeebo.velociraptor.annotation.Bindable;
 import com.zeebo.velociraptor.binding.view.ViewBindingFactory;
 import com.zeebo.velociraptor.model.Model;
 import com.zeebo.velociraptor.view.View;
@@ -32,19 +34,29 @@ public final class BindingProcessor
 	 */
 	public static void attachBindings(Model model, View<?> view)
 	{
-		Field[] allFields = view.getClass().getDeclaredFields();
+		Field[] modelFieldArray = ReflectionUtilities.getAllFields(model.getClass(), Model.class);
+		HashMap<String, Field> modelFields = new HashMap<String, Field>();
 
-		for(Field f : allFields)
+		for(Field f : modelFieldArray)
 		{
-			Bind binding = f.getAnnotation(Bind.class);
+			f.setAccessible(true);
+			modelFields.put(f.getName(), f);
+		}
 
-			if(ReflectionUtilities.testSubclassOf(f.getType(), JComponent.class) && binding != null)
+		Field[] viewFields = ReflectionUtilities.getAllFields(view.getClass(), View.class);
+
+		for(Field f : viewFields)
+		{
+			Bind viewBinding = f.getAnnotation(Bind.class);
+			Bindable modelBinding = modelFields.get(viewBinding.value()).getAnnotation(Bindable.class);
+
+			if(modelBinding != null && ReflectionUtilities.testSubclassOf(f.getType(), JComponent.class) && viewBinding != null)
 			{
 				f.setAccessible(true);
 
 				try
 				{
-					ViewBindingFactory.newViewBinding(model, binding.value(), (JComponent)f.get(view));
+					ViewBindingFactory.newViewBinding(model, viewBinding.value(), modelBinding.value(), (JComponent)f.get(view));
 				}
 				catch(IllegalAccessException iae)
 				{

@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Observable;
 
+import com.zeebo.common.reflection.ReflectionUtilities;
 import com.zeebo.velociraptor.annotation.Bindable;
 import com.zeebo.velociraptor.view.View;
 
@@ -29,13 +30,13 @@ public class Model extends Observable
 	 */
 	public Model()
 	{
+		Field[] fieldArray = ReflectionUtilities.getAllFields(this.getClass(), Model.class);
 		fields = new HashMap<String, Field>();
-		Field[] allFields = getClass().getDeclaredFields();
 
-		for(Field f : allFields)
+		for(Field f : fieldArray)
 		{
-			fields.put(f.getName(), f);
 			f.setAccessible(true);
+			fields.put(f.getName(), f);
 		}
 	}
 

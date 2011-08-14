@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.zeebo.velociraptor.annotation.Bind;
+import com.zeebo.velociraptor.annotation.Bindable;
 import com.zeebo.velociraptor.model.Model;
 import com.zeebo.velociraptor.view.ViewTest.ViewTestModel;
 
@@ -53,6 +54,7 @@ public class ViewTest extends View<ViewTestModel>
 
 	class ViewTestModel extends Model
 	{
+		@Bindable
 		private String	name;
 	}
 }
